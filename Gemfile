@@ -1,4 +1,3 @@
 source 'https://rubygems.org'
 
 gem 'selenium-webdriver'
-gem 'pry-byebug', '~> 3.4'

@@ -1,3 +1,0 @@
-class BasePageObject
-
-end
