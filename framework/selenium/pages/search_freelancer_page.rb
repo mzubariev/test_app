@@ -1,52 +1,36 @@
 module TestApp
-  class SearchFreelancerPage
+  class SearchFreelancerPage < PageObject
 
-    extend PageObject
-    include WebdriverUtils
     include Logger
     include Asserts::FreelancersAsserts
-    attr_reader :driver, :freelancers
+    attr_reader :freelancers
 
-    page_element(:search_resulsts_section, :id, 'oContractorResults')
+    SEARCH_RESULTS_SECTION = { id: 'oContractorResults' }.freeze
 
-    def initialize(driver)
-      @driver = driver
+    def initialize(wd)
+      super
       @freelancers = []
     end
 
-    def check_freelancers_info_contains_keyword(keyword)
-      freelancers.each do |freelancer|
-        logger_string = "\nFreelancer #{freelancer[:name]}:"
-        freelancer.each do |key, value|
-          next if key == :name
-          logger_string << if value.downcase.include?(keyword.downcase)
-                             "\n+ field '#{key}' contains keyword '#{keyword}'"
-                           else
-                             "\n- field '#{key}' does not contain keyword '#{keyword}'"
-                           end
-        end
-        logger.info(logger_string + "\n")
-      end
-    end
-
-    def navigate_to_freelancer_profile_page(freelancer_name = nil)
-      driver.find_element(:link, freelancer_name || random_freelancer_name).click
-      FreelancerProfilePage.new(driver)
-    end
-
     def parse_freelancers
-      @freelancers = Parser.new(search_resulsts_section.attribute('innerHTML'))
-                         .parse_freelancers_section
+      @freelancers = Parser.new(find(SEARCH_RESULTS_SECTION)
+                                    .attribute('innerHTML')).parse_freelancers_section
+    end
+
+    def navigate_to_fr_profile_page(freelancer_name = nil)
+      click_on(link: freelancer_name || random_freelancer_name)
+      wait_for_page_to_load
+      FreelancerProfilePage.new(wd)
     end
 
     private
 
     def freelancers_count
-      freelancers.count
+      @freelancers.count
     end
 
     def random_freelancer_name
-      freelancers[rand(0...freelancers_count)][:name]
+      @freelancers[rand(0...freelancers_count)][:name]
     end
   end
 end

@@ -1,0 +1,4 @@
+feature_file = 1
+test_case = 1
+browser = chrome
+keyword = ruby

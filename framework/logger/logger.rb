@@ -2,6 +2,7 @@ require 'logger'
 
 module TestApp
   module Logger
+
     def logger
       @logger ||= TestApp::Logger.logger_for(full_class_name)
     end

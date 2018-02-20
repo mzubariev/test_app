@@ -6,28 +6,30 @@ module TestApp
     attr_reader :driver
 
     DEFAULT_BROWSER = :firefox
-    BASE_URL = 'https://www.upwork.com/'
+    DEFAULT_WEBDRIVER_TIMEOUT = 10
+    BASE_URL = 'https://www.upwork.com'
 
     def initialize(browser = nil)
       @driver = if browser.nil?
                   Selenium::WebDriver.for DEFAULT_BROWSER
                 else
                   Selenium::WebDriver.for browser.to_sym
-                end
+            end
+      @driver.manage.timeouts.implicit_wait = DEFAULT_WEBDRIVER_TIMEOUT
       clear_cookie
-      navigate_to(BASE_URL)
+      go_to_start_page
     end
 
-    def navigate_to(url)
-      @driver.navigate.to(url)
+    def go_to_start_page
+      driver.navigate.to(BASE_URL)
     end
 
     def clear_cookie
-      @driver.manage.delete_all_cookies
+      driver.manage.delete_all_cookies
     end
 
     def stop
-      @driver.quit
+      driver.quit
     end
   end
 end

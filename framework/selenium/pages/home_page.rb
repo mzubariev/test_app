@@ -1,23 +1,21 @@
 module TestApp
-  class HomePage
+  class HomePage < PageObject
 
-    extend PageObject
-    include WebdriverUtils
-    attr_reader :driver
+    SEARCH_INPUT =          { id: 'q'                          }.freeze
+    SEARCH_BUTTON =         { class: 'air-icon-search'         }.freeze
+    FIND_FREELANCERS_LINK = { partial_link_text: 'Freelancers' }.freeze
 
-    page_element(:search_input, :id, 'q')
-    page_element(:search_button, :class, 'air-icon-search')
-    page_element(:find_freelancers_link, :partial_link_text, 'Freelancers')
-
-    def initialize(driver)
-      @driver = driver
+    def initialize(wd)
+      super
     end
 
     def search_for(search_text)
-      search_button.click
-      find_freelancers_link.click
-      search_input.send_keys([:control, 'a'], :space, search_text, :enter)
-      SearchFreelancerPage.new(driver)
+      click_on(SEARCH_BUTTON)
+      click_on(FIND_FREELANCERS_LINK)
+      type(SEARCH_INPUT, search_text)
+      find(SEARCH_INPUT).send_keys(:enter)
+      wait_for_page_to_load
+      SearchFreelancerPage.new(wd)
     end
   end
 end

@@ -1,55 +1,32 @@
 module TestApp
-  class FreelancerProfilePage
+  class FreelancerProfilePage < PageObject
 
-    extend PageObject
-    include WebdriverUtils
     include Logger
     include Asserts::FreelancersAsserts
-    attr_reader :driver, :freelancer_profile
+    attr_reader :freelancer_profile
 
-    page_element(:profile_name, :css, 'div.media-body h2>span>span')
-    page_element(:profile_title, :class, 'fe-job-title')
-    page_element(:profile_description, :class, 'cfe-overview')
-    page_element(:company_profile_name, :css, 'div.media-body h2')
-    page_element(:company_profile_title, :css, 'div.media-body h2')
-    page_element(:company_profile_description, :css, 'section>h2+div')
+    FR_PROFILE_NAME =             { css: 'div.media-body h2>span>span' }.freeze
+    FR_PROFILE_TITLE =            { class: 'fe-job-title'              }.freeze
+    FR_PROFILE_DESCRIPTION =      { class: 'cfe-overview'              }.freeze
+    COMPANY_PROFILE_NAME =        { css: 'div.media-body h2'           }.freeze
+    COMPANY_PROFILE_TITLE =       { css: 'div.media-body h2'           }.freeze
+    COMPANY_PROFILE_DESCRIPTION = { css: 'section>h2+div'              }.freeze
 
-    def initialize(driver)
-      @driver = driver
+    def initialize(wd)
+      super
       @freelancer_profile = freelancer_profile_fields_text
-    end
-
-    def check_freelancer_info_contains_keyword(keyword)
-      logger_string = "\nFreelancer #{freelancer_profile[:name]}:"
-      freelancer_profile.each do |key, value|
-        next if key == :name
-        logger_string << if value.downcase.include?(keyword.downcase)
-                           "\n+ field '#{key}' contains keyword '#{keyword}'"
-                         else
-                           "\n- field '#{key}' does not contain keyword '#{keyword}'"
-                         end
-      end
-      logger.info(logger_string + "\n")
-    end
-
-    def check_freelancer_profile(freelancers)
-      freelancer = freelancers.find { |freelancer| freelancer[:name] == freelancer_profile[:name] }
-      freelancer_profile.each do |key, value|
-        if value.include?(freelancer[key.to_sym])
-          logger.info("+ Profile field #{key} matches with the same field from preview.")
-        else
-          logger.error("- Profile field #{key} does not match with the same field from preview.")
-        end
-      end
     end
 
     private
 
     def freelancer_profile_fields_text
       {
-        name: profile_name ? profile_name.text : company_profile_name.attribute('innerHTML'),
-        title: profile_title ? profile_title.text : company_profile_title.attribute('innerHTML'),
-        description: profile_description ? profile_description.text : company_profile_description.attribute('innerHTML')
+        name: displayed?(FR_PROFILE_NAME) ?
+                  text_of(FR_PROFILE_NAME) : find(COMPANY_PROFILE_NAME).attribute('innerHTML'),
+        title: displayed?(FR_PROFILE_TITLE) ?
+                   text_of(FR_PROFILE_TITLE) : find(COMPANY_PROFILE_TITLE).attribute('innerHTML'),
+        description: displayed?(FR_PROFILE_DESCRIPTION) ?
+                         text_of(FR_PROFILE_DESCRIPTION) : find(COMPANY_PROFILE_DESCRIPTION).attribute('innerHTML')
       }
     end
   end
