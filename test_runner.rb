@@ -1,7 +1,5 @@
 $LOAD_PATH.concat(Dir.glob("#{ENV['GEM_HOME']}/gems/*/lib"), [])
 
-require 'pry'
-
 require 'selenium-webdriver'
 require_relative 'framework/logger/logger'
 require_relative 'framework/parser/parser'
