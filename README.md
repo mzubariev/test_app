@@ -3,8 +3,8 @@ Tiny framework for web testing with using of Page Object approach
 
 #### Setup
 
-* installed ruby 2.5.0
-* installed gekodrivers for browsers you want to run tests on
+* install ruby 2.5.0
+* install gekodrivers for browsers you want to run tests on
 
 ##### How to use:
 
@@ -12,9 +12,6 @@ Tiny framework for web testing with using of Page Object approach
 
 2. Run bundle install
 
-3. Run:   ruby test_runner.rb -f 1 -t 1 -b chrome -d search_freelancer_keyword
-* -f: feature file (mandatory)
-* -t: test case (mandatory)
-* -b: browser (optional. Default: firefox)
-* -d: data file (different setup data that is [not] needed for definite test)
+3. Run:  ruby test_runner.rb 1.1
+* where parameter 1.1 represents number of a feature file and number of a test case, bordered by dot.
 
