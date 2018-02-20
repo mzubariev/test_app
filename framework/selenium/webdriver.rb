@@ -16,6 +16,7 @@ module TestApp
                   Selenium::WebDriver.for browser.to_sym
             end
       @driver.manage.timeouts.implicit_wait = DEFAULT_WEBDRIVER_TIMEOUT
+      @driver.manage.window.maximize
       clear_cookie
       go_to_start_page
     end

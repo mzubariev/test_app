@@ -6,15 +6,17 @@ module TestApp
 
       def verify_info_contains_keyword(keyword)
         freelancers_arr = !@freelancer_profile.nil? ? [@freelancer_profile] : @freelancers
+        logger.info("*********Search for keyword in reelancers info************\n")
         freelancers_arr.each do |freelancer|
-          logger_arr = ["\nFreelancer #{freelancer[:name]}:"]
+          logger_arr = ["Freelancer #{freelancer[:name]}:"]
           logger_arr.append(search_fileds_for_keyword_log(freelancer, keyword)).flatten
-          logger.info(logger_arr.join("\n"))
+          logger.info(logger_arr.join("\n") + "\n")
         end
       end
 
       def verify_freelancer_profile(freelancers)
         freelancer = freelancers.find { |freelancer| freelancer[:name] == @freelancer_profile[:name] }
+        logger.info("*****Profile page of #{freelancer[:name]}*****")
         @freelancer_profile.each do |key, value|
           if value.include?(freelancer[key.to_sym])
             logger.info("+ Profile field #{key} matches with the same field from preview.")
@@ -31,9 +33,9 @@ module TestApp
         freelancer.each do |key, value|
           next if key == :name
           result_arr << if value.downcase.include?(keyword.downcase)
-                          "\n+ field '#{key}' contains keyword '#{keyword}'"
+                          "+ field '#{key}' contains keyword '#{keyword}'"
                         else
-                          "\n- field '#{key}' does not contain keyword '#{keyword}'"
+                          "- field '#{key}' does not contain keyword '#{keyword}'"
                         end
         end
         result_arr

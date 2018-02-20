@@ -13,6 +13,7 @@ module TestApp
     end
 
     def parse_freelancers
+      wait_for { displayed?(SEARCH_RESULTS_SECTION) }
       @freelancers = Parser.new(find(SEARCH_RESULTS_SECTION)
                                     .attribute('innerHTML')).parse_freelancers_section
     end
