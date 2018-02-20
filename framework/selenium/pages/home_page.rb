@@ -14,7 +14,7 @@ module TestApp
       click_on(FIND_FREELANCERS_LINK)
       type(SEARCH_INPUT, search_text)
       find(SEARCH_INPUT).send_keys(:enter)
-      wait_for_page_to_load
+      wait_for_page_to_load(SearchFreelancerPage.name)
       SearchFreelancerPage.new(wd)
     end
   end

@@ -1,11 +1,11 @@
 module TestApp
   class SearchFreelancerPage < PageObject
 
-    include Logger
     include Asserts::FreelancersAsserts
     attr_reader :freelancers
 
-    SEARCH_RESULTS_SECTION = { id: 'oContractorResults' }.freeze
+    SEARCH_RESULTS_SECTION = { id: 'oContractorResults'            }.freeze
+    PAGINATION             = { css: '[data-qa="tile_description"]' }.freeze
 
     def initialize(wd)
       super
@@ -13,14 +13,16 @@ module TestApp
     end
 
     def parse_freelancers
-      wait_for { displayed?(SEARCH_RESULTS_SECTION) }
+      wait_for { displayed?(PAGINATION) }
       @freelancers = Parser.new(find(SEARCH_RESULTS_SECTION)
                                     .attribute('innerHTML')).parse_freelancers_section
     end
 
     def navigate_to_fr_profile_page(freelancer_name = nil)
-      click_on(link: freelancer_name || random_freelancer_name)
-      wait_for_page_to_load
+      fr_name = freelancer_name || random_freelancer_name
+      logger.info("Navigate to freelancer '#{fr_name}' profile page...")
+      click_on(link: fr_name)
+      wait_for_page_to_load(FreelancerProfilePage.name)
       FreelancerProfilePage.new(wd)
     end
 

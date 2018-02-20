@@ -5,6 +5,7 @@ module TestApp
       extend Logger
 
       def verify_info_contains_keyword(keyword)
+        logger.info("Verify freelancer's info contains keyword '#{keyword}'")
         freelancers_arr = !@freelancer_profile.nil? ? [@freelancer_profile] : @freelancers
         logger.info("*********Search for keyword in reelancers info************\n")
         freelancers_arr.each do |freelancer|
@@ -15,6 +16,7 @@ module TestApp
       end
 
       def verify_freelancer_profile(freelancers)
+        logger.info("Verify freelancer #{@freelancer_profile[:name]} profile")
         freelancer = freelancers.find { |freelancer| freelancer[:name] == @freelancer_profile[:name] }
         logger.info("*****Profile page of #{freelancer[:name]}*****")
         @freelancer_profile.each do |key, value|

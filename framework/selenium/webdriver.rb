@@ -10,6 +10,7 @@ module TestApp
     BASE_URL = 'https://www.upwork.com'
 
     def initialize(browser = nil)
+      logger.info('Setup webdriver...')
       @driver = if browser.nil?
                   Selenium::WebDriver.for DEFAULT_BROWSER
                 else
@@ -22,14 +23,17 @@ module TestApp
     end
 
     def go_to_start_page
+      logger.info('Go to start page!')
       driver.navigate.to(BASE_URL)
     end
 
     def clear_cookie
+      logger.info('Clear browser cookie...')
       driver.manage.delete_all_cookies
     end
 
     def stop
+      logger.info('Stop webdriver. Happy end :)')
       driver.quit
     end
   end

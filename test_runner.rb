@@ -22,7 +22,7 @@ module TestApp
     end
 
     def run
-      logger.info('Start test_runner main script.')
+      logger.info('Start test_runner main script...')
 
       test_case_file = Dir.glob("features/ff#{ff}_*/tc#{tc}_*")[0]
 
@@ -32,6 +32,7 @@ module TestApp
         test_data = {}
         fixture_file_path = "fixtures/#{ff}.#{tc}.txt"
         if File.file?(fixture_file_path)
+          logger.info('Setup test preconditions...')
           File.readlines(fixture_file_path).each do |line|
             key, value = line.strip.split(' = ')
             test_data[key.to_sym] = value
@@ -47,7 +48,7 @@ module TestApp
 
     def execute_test_file(test_case_file, wd, test_data = {})
       require_relative test_case_file
-      logger.info('Run test file.')
+      logger.info('Run test file!')
       main(wd, test_data)
       logger.info('Test finished.')
     end

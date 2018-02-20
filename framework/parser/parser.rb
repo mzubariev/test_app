@@ -1,6 +1,7 @@
 module TestApp
   class Parser
 
+    include Logger
     attr_reader :html_string
 
     def initialize(html_string)
@@ -8,6 +9,7 @@ module TestApp
     end
 
     def parse_freelancers_section
+      logger.info('Parse found freelancers section...')
       freelancers = []
       freelancer_sections_arr = html_string.scan(/<article.*?>.+?<\/article>/m)
       freelancer_sections_arr.each do |freelancer_section|

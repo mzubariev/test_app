@@ -1,7 +1,6 @@
 module TestApp
   class FreelancerProfilePage < PageObject
 
-    include Logger
     include Asserts::FreelancersAsserts
     attr_reader :freelancer_profile
 
