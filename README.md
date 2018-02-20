@@ -15,3 +15,4 @@ Tiny framework for web testing with using of Page Object approach
 3. Run:  ruby test_runner.rb 1.1
 * where parameter 1.1 represents number of a feature file and number of a test case, bordered by dot.
 
+Note: you can change input data for test inside its own fixture file which has the same name as passed parameter (feature_number.test_case_number; ex. 1.1)
